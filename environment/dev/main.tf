@@ -7,6 +7,7 @@ module "vnet" {
 }
 
 module "subnet" {
+  depends_on = [ module.vnet ]
   source               = "../../modules/azurerm_subnet"
   subnet_name          = "frontend-subnet"
   resource_group_name  = "rg-demon-slayer"
@@ -15,6 +16,7 @@ module "subnet" {
 }
 
 module "subnet1" {
+  depends_on = [ module.vnet ]
   source               = "../../modules/azurerm_subnet"
   subnet_name          = "backend-subnet"
   resource_group_name  = "rg-demon-slayer"
