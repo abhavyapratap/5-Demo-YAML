@@ -1,0 +1,49 @@
+trigger:
+- none
+
+pool:
+  DevOps-Poool
+
+variables:
+  workingPath: environment/dev
+
+steps:
+- task: TerraformInstaller@1
+  displayName: Terraform Installer
+  inputs:
+   terraformVersion: latest
+
+- task: TerraformTask@5
+  displayName: Terraform Init
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: $(workingPath)
+    backendServiceArm: 'Service Connection'
+    backendAzureRmResourceGroupName: 'rg-demon-slayer'
+    backendAzureRmStorageAccountName: 'luciferstorageacc'
+    backendAzureRmContainerName: 'lucifercontainer'
+    backendAzureRmKey: 'firehashira.tfstate'
+
+- task: TerraformTask@5
+  displayName: Terraform Validate
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: $(workingPath)
+
+- task: TerraformTask@5
+  displayName: Terraform Plan
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: $(workingPath)
+    environmentServiceNameAzureRM: 'Service Connection'
+
+- task: TerraformTask@5
+  displayName: Terraform Apply
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    workingDirectory: $(workingPath)
+    environmentServiceNameAzureRM: 'Service Connection'
