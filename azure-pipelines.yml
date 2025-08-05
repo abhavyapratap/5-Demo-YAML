@@ -5,7 +5,7 @@ pool:
   DevOps-Poool
 
 variables:
-  workingPath: environment/dev
+  workingDirectory: environment/dev
 
 steps:
 - task: TerraformInstaller@1
@@ -18,7 +18,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: $(workingPath)
+    workingDirectory: "$(workingDirectory)"
     backendServiceArm: 'Service Connection'
     backendAzureRmResourceGroupName: 'rg-demon-slayer'
     backendAzureRmStorageAccountName: 'luciferstorageacc'
@@ -30,14 +30,14 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'validate'
-    workingDirectory: $(workingPath)
+    workingDirectory: "$(workingDirectory)"
 
 - task: TerraformTask@5
   displayName: Terraform Plan
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: $(workingPath)
+    workingDirectory: "$(workingDirectory)"
     environmentServiceNameAzureRM: 'Service Connection'
 
 - task: TerraformTask@5
@@ -45,5 +45,5 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'apply'
-    workingDirectory: $(workingPath)
+    workingDirectory: "$(workingDirectory)"
     environmentServiceNameAzureRM: 'Service Connection'
